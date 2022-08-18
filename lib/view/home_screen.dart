@@ -10,6 +10,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController searchController = TextEditingController();
+
   Future onRefresh() async {
     await Future.delayed(const Duration(seconds: 2), () {});
     setState(() {
@@ -47,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         elevation: 4.0,
                                         margin: const EdgeInsets.all(6),
                                         child: Row(
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Flexible(
                                                 flex: 1,
@@ -74,6 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 flex: 2,
                                                 fit: FlexFit.loose,
                                                 child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
@@ -101,7 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ],
                                         ));
                               })),
-                        ));
+                        ),
+                );
         });
   }
 }
