@@ -1,4 +1,5 @@
 import 'package:artivatic_assignment/controller/home_controller.dart';
+import 'package:artivatic_assignment/view/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetBuilder<HomeController>(
         init: HomeController(),
         builder: (controller) {
+          print('asasas${controller.list.rows}');
           return controller.isLoading
               ? const Center(
                   child: CircularProgressIndicator(),
@@ -31,6 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
               : Scaffold(
                   appBar: AppBar(
                     title: Text(controller.list.title ?? ""),
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          showSearch(context: context, delegate: SearchView());
+                        },
+                        icon: const Icon(Icons.search),
+                      ),
+                    ],
                   ),
                   body: controller.list.rows!.isEmpty
                       ? const Center(
