@@ -1,3 +1,4 @@
+import 'package:artivatic_assignment/model/mymodel.dart';
 import 'package:artivatic_assignment/services/api_service.dart';
 import 'package:flutter/material.dart';
 
@@ -29,8 +30,30 @@ class SearchView extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return const Center(
-      child: Text('your data'),
+    return FutureBuilder<MyModel>(
+      future: _apiService.fetchData(query: query),
+      builder: ((context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: Text('No Data'),
+            );
+          } else {
+            List<Rows> data = snapshot.data!.rows!;
+            return ListView.builder(
+                itemCount: data.length,
+                itemBuilder: ((context, index) {
+                  return ListTile(
+                    title: Text(data[index].title ?? "--"),
+                  );
+                }));
+          }
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      }),
     );
   }
 

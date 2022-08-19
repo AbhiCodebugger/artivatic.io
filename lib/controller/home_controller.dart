@@ -19,7 +19,7 @@ class HomeController extends GetxController {
       var data = await _apiService.fetchData();
       _list = data;
       List<Rows> listRows = list.rows!;
-      print('listRows $listRows');
+      print('listRows $_list');
       isLoading = false;
     } catch (e) {
       debugPrint(e.toString());

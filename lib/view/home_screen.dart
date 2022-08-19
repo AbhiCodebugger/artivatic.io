@@ -25,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetBuilder<HomeController>(
         init: HomeController(),
         builder: (controller) {
-          print('asasas${controller.list.rows}');
           return controller.isLoading
               ? const Center(
                   child: CircularProgressIndicator(),
