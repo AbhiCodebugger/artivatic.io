@@ -8,6 +8,8 @@ class HomeController extends GetxController {
 
   MyModel _list = MyModel();
   MyModel get list => _list;
+  List<Rows> listRows = [];
+  TextEditingController searchController = TextEditingController();
 
   bool isLoading = false;
 
@@ -18,12 +20,24 @@ class HomeController extends GetxController {
       isLoading = true;
       var data = await _apiService.fetchData();
       _list = data;
-      List<Rows> listRows = list.rows!;
+      listRows = _list.rows!;
       print('listRows $_list');
       isLoading = false;
     } catch (e) {
       debugPrint(e.toString());
     }
+    update();
+  }
+
+  void searchData(String query) async {
+    print(query);
+    _list.rows = listRows.where((e) {
+      if (e.title == null) {
+        return e.title == 'Not Found';
+      } else {
+        return e.title!.toLowerCase().contains(query);
+      }
+    }).toList();
     update();
   }
 
