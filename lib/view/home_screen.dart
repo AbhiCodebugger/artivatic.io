@@ -30,7 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: CircularProgressIndicator(),
                 )
               : Scaffold(
+                  backgroundColor: Colors.brown[200],
                   appBar: AppBar(
+                    backgroundColor: Colors.brown[900],
                     title: Text(controller.list.title ?? ""),
                     // actions: [
                     //   IconButton(
@@ -49,15 +51,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           controller: controller.searchController,
                           onChanged: (value) => controller.searchData(value),
                           decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: 'Search',
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.brown)),
                               suffixIcon: IconButton(
                                 icon: const Icon(Icons.clear),
                                 onPressed: () {
                                   controller.searchController.text = '';
                                 },
                               ),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20))),
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide.none)),
                         ),
                       ),
                       controller.list.rows!.isEmpty
