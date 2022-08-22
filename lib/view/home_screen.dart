@@ -1,5 +1,4 @@
 import 'package:artivatic_assignment/controller/home_controller.dart';
-import 'package:artivatic_assignment/view/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,13 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
         init: HomeController(),
         builder: (controller) {
           return controller.isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
+              ? const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 )
               : Scaffold(
-                  backgroundColor: Colors.brown[200],
+                  backgroundColor: Colors.blueGrey[200],
                   appBar: AppBar(
-                    backgroundColor: Colors.brown[900],
+                    backgroundColor: Colors.blueGrey[900],
                     title: Text(controller.list.title ?? ""),
                     // actions: [
                     //   IconButton(
@@ -43,11 +44,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     //   ),
                     // ],
                   ),
-                  body: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
+                  body: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        TextField(
                           controller: controller.searchController,
                           onChanged: (value) => controller.searchData(value),
                           decoration: InputDecoration(
@@ -55,7 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               fillColor: Colors.white,
                               hintText: 'Search',
                               focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.brown)),
+                                  borderSide:
+                                      BorderSide(color: Colors.blueGrey)),
                               suffixIcon: IconButton(
                                 icon: const Icon(Icons.clear),
                                 onPressed: () {
@@ -65,91 +67,97 @@ class _HomeScreenState extends State<HomeScreen> {
                               border: const OutlineInputBorder(
                                   borderSide: BorderSide.none)),
                         ),
-                      ),
-                      controller.list.rows!.isEmpty
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Expanded(
-                              child: RefreshIndicator(
-                                onRefresh: onRefresh,
-                                child: ListView.builder(
-                                    itemCount: controller.list.rows!.length,
-                                    itemBuilder: ((context, index) {
-                                      return controller.isLoading
-                                          ? const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : Card(
-                                              elevation: 4.0,
-                                              margin: const EdgeInsets.all(6),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Flexible(
-                                                      flex: 1,
-                                                      child: controller
-                                                                  .list
-                                                                  .rows![index]
-                                                                  .imageHref ==
-                                                              null
-                                                          ? Image.asset(
-                                                              'assets/placeholder.png')
-                                                          : Image.network(
-                                                              controller
-                                                                  .list
-                                                                  .rows![index]
-                                                                  .imageHref!,
-                                                              fit: BoxFit.cover,
-                                                              errorBuilder:
-                                                                  (context,
-                                                                      error,
-                                                                      stackTrace) {
-                                                                return Image.asset(
-                                                                    'assets/placeholder.png');
-                                                              },
-                                                            )),
-                                                  const SizedBox(width: 6),
-                                                  Flexible(
-                                                      flex: 2,
-                                                      fit: FlexFit.loose,
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            controller
+                        const SizedBox(height: 12),
+                        controller.list.rows!.isEmpty
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Expanded(
+                                child: RefreshIndicator(
+                                  onRefresh: onRefresh,
+                                  child: ListView.builder(
+                                      itemCount: controller.list.rows!.length,
+                                      itemBuilder: ((context, index) {
+                                        return controller.isLoading
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              )
+                                            : Card(
+                                                elevation: 4.0,
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Flexible(
+                                                        flex: 1,
+                                                        child: controller
                                                                     .list
                                                                     .rows![
                                                                         index]
-                                                                    .title ??
-                                                                "-",
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .titleMedium!
-                                                                .copyWith(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                          ),
-                                                          Text(controller
-                                                                  .list
-                                                                  .rows![index]
-                                                                  .description ??
-                                                              "-"),
-                                                        ],
-                                                      ))
-                                                ],
-                                              ));
-                                    })),
+                                                                    .imageHref ==
+                                                                null
+                                                            ? Image.asset(
+                                                                'assets/placeholder.png')
+                                                            : Image.network(
+                                                                controller
+                                                                    .list
+                                                                    .rows![
+                                                                        index]
+                                                                    .imageHref!,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                errorBuilder:
+                                                                    (context,
+                                                                        error,
+                                                                        stackTrace) {
+                                                                  return Image
+                                                                      .asset(
+                                                                          'assets/placeholder.png');
+                                                                },
+                                                              )),
+                                                    const SizedBox(width: 6),
+                                                    Flexible(
+                                                        flex: 2,
+                                                        fit: FlexFit.loose,
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              controller
+                                                                      .list
+                                                                      .rows![
+                                                                          index]
+                                                                      .title ??
+                                                                  "-",
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .titleMedium!
+                                                                  .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                            ),
+                                                            Text(controller
+                                                                    .list
+                                                                    .rows![
+                                                                        index]
+                                                                    .description ??
+                                                                "-"),
+                                                          ],
+                                                        ))
+                                                  ],
+                                                ));
+                                      })),
+                                ),
                               ),
-                            ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
         });
