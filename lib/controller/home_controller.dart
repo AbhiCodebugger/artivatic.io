@@ -20,17 +20,16 @@ class HomeController extends GetxController {
       isLoading = true;
       var data = await _apiService.fetchData();
       _list = data;
-      listRows = _list.rows!;
-      print('listRows $_list');
+
       isLoading = false;
+      listRows = _list.rows!;
     } catch (e) {
-      debugPrint(e.toString());
+      isLoading = false;
     }
     update();
   }
 
   void searchData(String query) async {
-    print(query);
     _list.rows = listRows.where((e) {
       if (e.title == null) {
         return e.title == 'Not Found';
@@ -41,9 +40,20 @@ class HomeController extends GetxController {
     update();
   }
 
+  Future onRefresh() async {
+    await Future.delayed(const Duration(seconds: 2), () {});
+    update();
+  }
+
   @override
   void onInit() {
-    fetch();
     super.onInit();
+    fetch();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchController.dispose();
   }
 }

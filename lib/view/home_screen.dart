@@ -10,15 +10,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController searchController = TextEditingController();
-
-  Future onRefresh() async {
-    await Future.delayed(const Duration(seconds: 2), () {});
-    setState(() {
-      debugPrint('refresh');
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
@@ -35,14 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   appBar: AppBar(
                     backgroundColor: Colors.blueGrey[900],
                     title: Text(controller.list.title ?? ""),
-                    // actions: [
-                    //   IconButton(
-                    //     onPressed: () {
-                    //       showSearch(context: context, delegate: SearchView());
-                    //     },
-                    //     icon: const Icon(Icons.search),
-                    //   ),
-                    // ],
                   ),
                   body: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -68,94 +51,70 @@ class _HomeScreenState extends State<HomeScreen> {
                                   borderSide: BorderSide.none)),
                         ),
                         const SizedBox(height: 12),
-                        controller.list.rows!.isEmpty
-                            ? const Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : Expanded(
-                                child: RefreshIndicator(
-                                  onRefresh: onRefresh,
-                                  child: ListView.builder(
-                                      itemCount: controller.list.rows!.length,
-                                      itemBuilder: ((context, index) {
-                                        return controller.isLoading
-                                            ? const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              )
-                                            : Card(
-                                                elevation: 4.0,
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Flexible(
-                                                        flex: 1,
-                                                        child: controller
-                                                                    .list
-                                                                    .rows![
-                                                                        index]
-                                                                    .imageHref ==
-                                                                null
-                                                            ? Image.asset(
-                                                                'assets/placeholder.png')
-                                                            : Image.network(
-                                                                controller
-                                                                    .list
-                                                                    .rows![
-                                                                        index]
-                                                                    .imageHref!,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                errorBuilder:
-                                                                    (context,
-                                                                        error,
-                                                                        stackTrace) {
-                                                                  return Image
-                                                                      .asset(
-                                                                          'assets/placeholder.png');
-                                                                },
-                                                              )),
-                                                    const SizedBox(width: 6),
-                                                    Flexible(
-                                                        flex: 2,
-                                                        fit: FlexFit.loose,
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              controller
-                                                                      .list
-                                                                      .rows![
-                                                                          index]
-                                                                      .title ??
-                                                                  "-",
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .titleMedium!
-                                                                  .copyWith(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                            ),
-                                                            Text(controller
-                                                                    .list
-                                                                    .rows![
-                                                                        index]
-                                                                    .description ??
-                                                                "-"),
-                                                          ],
-                                                        ))
-                                                  ],
-                                                ));
-                                      })),
-                                ),
-                              ),
+                        Expanded(
+                          child: RefreshIndicator(
+                            onRefresh: controller.onRefresh,
+                            child: ListView.builder(
+                                itemCount: controller.list.rows!.length,
+                                itemBuilder: ((context, index) {
+                                  return Card(
+                                      elevation: 4.0,
+                                      child: Row(
+                                        children: [
+                                          Flexible(
+                                              flex: 1,
+                                              child: controller
+                                                          .list
+                                                          .rows![index]
+                                                          .imageHref ==
+                                                      null
+                                                  ? Image.asset(
+                                                      'assets/placeholder.png')
+                                                  : Image.network(
+                                                      controller
+                                                          .list
+                                                          .rows![index]
+                                                          .imageHref!,
+                                                      fit: BoxFit.cover,
+                                                      errorBuilder: (context,
+                                                          error, stackTrace) {
+                                                        return Image.asset(
+                                                            'assets/placeholder.png');
+                                                      },
+                                                    )),
+                                          const SizedBox(width: 6),
+                                          Flexible(
+                                              flex: 2,
+                                              fit: FlexFit.loose,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    controller.list.rows![index]
+                                                            .title ??
+                                                        "-",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium!
+                                                        .copyWith(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                  Text(controller
+                                                          .list
+                                                          .rows![index]
+                                                          .description ??
+                                                      "-"),
+                                                ],
+                                              ))
+                                        ],
+                                      ));
+                                })),
+                          ),
+                        ),
                       ],
                     ),
                   ),
